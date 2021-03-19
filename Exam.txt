@@ -1,0 +1,115 @@
+<form [formGroup]="formGroupName">
+<div class="form-group">
+    <label>Lable</label>
+    <input type="text" class="form-control" formControlName="Lable" id="Lable">
+	
+	 <p *ngIf="(formGroupName.controls.firstName.dirty || formGroupName.controls.firstName.touched) 
+	 && registerForm.controls.firstName.errors?.required" class="error">Required Filed</p>
+	 
+	 
+  </div>
+  <div class="form-group">
+    <label>Lable</label>
+    <input type="email" class="form-control" formControlName="Lable" id="Lable" >
+  </div>
+  <button (click)="methodeName()"class="btn btn-primary">Submit</button>
+</form>
+<div class="error" *ngIf="errorMessege">{{errorMessege}}</div>
+<div class="success" *ngIf="SuccessMessege">{{SuccessMessege}}</div>
+
+
+2.
+<div class="form-group">
+<label>Lable</label>
+<select class="form-control" (change)="currentIndex($event)">
+<option *ngFor="let data of data">{{data}}</option>
+
+</div>
+
+---------------------------------------------------------------------------
+
+<label>Lable</label>
+<input type="text" class="form-control" [(ngModel)]="name" id="Lable">
+<button (click)="getDetails()"class="btn btn-primary">Submit</button>
+<div *ngIf="selectedBooking">
+<table class="table table-bordered">
+<tr>
+<th>{{selectedBooking.buffetdate | date:"MMMM dd,yyyy"}}</th>
+<th>{{selectedBooking.name}}</th>
+<th>{{selectedBooking.name}}</th>
+</tr>
+<tr>
+
+</tr>
+
+</table>
+</div>
+
+
+-----------------------------------------------------
+this.service.methode(formGroup.value).subscribe(success=>{
+},
+error=>{
+this.errorMessege=error.error.message;
+})
+
+
+
+------------------------------------------------------------------------------------------------
+
+<li><a class="nav-color" [routerLink]='["/dashboard"]' routerLinkActive="active">Dashboard</a></li>
+<li><a class="nav-color"  [routerLink]='["/books"]' routerLinkActive="active">Books</a></li>
+ 
+ <a class="nav-color"  [routerLink]='["/detail/1"]' routerLinkActive="active">Books</a>
+ <a class="nav-color"  [routerLink]='["/detail/2"]' routerLinkActive="active">Books</a>
+ (or)
+ <a routerLink="detail/1" routerLinkActive="active">Books</a>
+  <a routerLink="detail/1" routerLinkActive="active">Books</a>
+ 
+  { path: 'dashboard', component: DashboardComponent },
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: 'books', component: BookComponent },
+    { path: 'detail/:id', component: BookDetailComponent }
+	{ path: '**', component: pagenotFound },
+	 
+	import { ActivatedRoute, ParamMap } from '@angular/router';
+	private route: ActivatedRoute
+	this.route.snapshot.params.get('id')
+	this.route.snapshot.paramMap.get('id')
+----------------------------------------------------------------------------------------------------------------------
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+this.formGroupName=this.fb.group({
+formControlName:['',Validators.required],
+formControlName:['',Validators.required],
+formControlName:['',Validators.required],
+formControlName:['', Validators.min(3)],
+formControlName:['',Validators.max(15)],Validators.maxLength(5)
+
+})
+------------------------------------------------------------------------------------------------
+postmethod(data):Observable<any>{
+return this.httpClient.post<any>(this.url,data);
+}
+
+------------------------------------------------------------------------------------------------------
+this.registerForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      address: this.formBuilder.group({
+        street: [],
+        zip: [],
+        city: []
+      }),
+      email:['',validateEmail]
+    });
+  }
+}
+function validateEmail(c: FormControl) {
+    let EMAIL_REGEXP = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+    return EMAIL_REGEXP.test(c.value) ? null : {
+        emailInvalid: {
+            message: "Invalid Format!"
+        }
+    };
+}
+
